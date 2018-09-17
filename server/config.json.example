@@ -1,0 +1,7 @@
+{
+  "GoogleOAuth": {
+    "clientId": "",
+    "clientSecret": "",
+    "callbackURL": ""
+  }
+}
