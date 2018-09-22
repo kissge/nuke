@@ -7,7 +7,9 @@ import { ConfigService } from './config.service';
   providers: [
     {
       provide: ConfigService,
-      useValue: JSON.parse(fs.readFileSync('config.json', {encoding: 'utf-8'})) as ConfigService,
+      useValue: JSON.parse(
+        fs.readFileSync('config.json', { encoding: 'utf-8' }),
+      ) as ConfigService,
     },
   ],
   exports: [ConfigService],

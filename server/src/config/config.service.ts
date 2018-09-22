@@ -1,3 +1,3 @@
 export class ConfigService {
-  GoogleOAuth: any
+  GoogleOAuth: any;
 }

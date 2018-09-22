@@ -6,13 +6,12 @@ import { User } from './user.entity';
 @Injectable()
 export class UserService {
   constructor(
-    @InjectRepository(User)
-    private readonly userRepository: Repository<User>,
+    @InjectRepository(User) private readonly userRepository: Repository<User>,
   ) {}
 
   async findOneByGoogleProfile(profile): Promise<User> {
     const email = this.findEmail(profile);
-    return email && await this.userRepository.findOne({ email });
+    return email && (await this.userRepository.findOne({ email }));
   }
 
   async register(profile): Promise<User> {
@@ -24,7 +23,7 @@ export class UserService {
   }
 
   private findEmail(profile) {
-    for (const {type, value} of profile.emails) {
+    for (const { type, value } of profile.emails) {
       if (type === 'account') {
         return value;
       }
