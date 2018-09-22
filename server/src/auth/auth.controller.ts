@@ -1,7 +1,7 @@
 import { Get, Controller, Req, Res, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 
-@Controller('api/auth')
+@Controller('auth')
 export class AuthController {
   @Get('google')
   @UseGuards(AuthGuard('google'))
