@@ -33,6 +33,13 @@ _axios.interceptors.response.use(
   },
   (err) => {
     // Do something with response error
+    if (err.response.status === 401) {
+      if (location.pathname !== '/' || location.hash !== '#/') {
+        location.href = '/';
+      }
+
+      return Promise.reject();
+    }
     return Promise.reject(err);
   },
 );
