@@ -34,8 +34,8 @@ _axios.interceptors.response.use(
   (err) => {
     // Do something with response error
     if (err.response.status === 401) {
-      if (location.pathname !== '/' || location.hash !== '#/') {
-        location.href = '/';
+      if (location.pathname !== '/' || location.hash !== '#/login') {
+        location.href = '/#/login';
       }
 
       return Promise.reject();
