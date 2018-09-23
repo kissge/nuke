@@ -6,9 +6,20 @@ import { AuthMiddleware } from './auth/auth.middleware';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from './config/config.module';
 import { UserModule } from './user/user.module';
+import { RecordModule } from './record/record.module';
+import { ProjectModule } from './project/project.module';
+import { CategoryModule } from './category/category.module';
 
 @Module({
-  imports: [TypeOrmModule.forRoot(), AuthModule, ConfigModule, UserModule],
+  imports: [
+    TypeOrmModule.forRoot(),
+    AuthModule,
+    ConfigModule,
+    UserModule,
+    RecordModule,
+    ProjectModule,
+    CategoryModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })

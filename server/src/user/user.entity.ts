@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { Record } from '../record/record.entity';
 
 @Entity()
 export class User {
@@ -16,4 +17,7 @@ export class User {
 
   @Column()
   isAdmin: boolean;
+
+  @OneToMany(type => Record, record => record.user)
+  records: Record[];
 }
