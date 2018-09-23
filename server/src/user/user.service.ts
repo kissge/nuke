@@ -11,13 +11,22 @@ export class UserService {
 
   async findOneByGoogleProfile(profile): Promise<User> {
     const email = this.findEmail(profile);
-    return email && (await this.userRepository.findOne({ email }));
+    if (email) {
+      const user = await this.userRepository.findOne({ email });
+      if (user && !user.name) {
+        this.register(user, profile);
+      }
+
+      return user;
+    }
+
+    return null;
   }
 
-  async register(profile): Promise<User> {
-    const user = new User();
+  async register(user, profile): Promise<User> {
     user.name = profile.displayName;
     user.email = this.findEmail(profile);
+    user.avatar = profile.image && profile.image.url;
 
     return await this.userRepository.save(user);
   }
