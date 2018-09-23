@@ -13,4 +13,8 @@ export class CategoryService {
   findAll() {
     return this.categoryRepository.find();
   }
+
+  async save(category: Category) {
+    return await this.categoryRepository.save(category);
+  }
 }
