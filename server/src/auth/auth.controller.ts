@@ -9,4 +9,10 @@ export class AuthController {
     req.login(req.user, _ => {});
     res.redirect('/');
   }
+
+  @Get('logout')
+  logout(@Req() req, @Res() res) {
+    req.logout();
+    res.redirect('/');
+  }
 }
