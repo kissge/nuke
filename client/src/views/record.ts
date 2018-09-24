@@ -11,16 +11,32 @@ export default class Category extends Vue {
   public records: any[] = [];
   public items: any[] = [];
   public modal = false;
-  public month = '2018-09';
+  public month = moment().format('YYYY-MM');
 
   private colorHash = new ColorHash({lightness: 0.7});
 
   public mounted() {
-    this.load();
+    this.$axios.get('/api/category')
+      .then((res) => this.categories = res.data);
+    this.$axios.get('/api/project')
+      .then((res) => this.projects = res.data);
 
+    const year = parseInt(this.$route.params.year, 10);
+    const month = parseInt(this.$route.params.month, 10);
+    if (1900 <= year && year <= 9999 && 1 <= month && month <= 12) {
+      this.month = `${year}-${this.pad(month)}`;
+    }
+
+    this.load();
+  }
+
+  public load() {
     const items = [];
     let cursor = 0;
-    for (const date = moment().startOf('month'); date <= moment().endOf('month'); date.add(1, 'day')) {
+
+    for (const date = moment(this.month + '-01').startOf('month');
+         date <= moment(this.month + '-01').endOf('month');
+         date.add(1, 'day')) {
       const yyyymmdd = date.format('YYYY-MM-DD');
 
       if (cursor < this.records.length && this.records[cursor].date === yyyymmdd) {
@@ -43,13 +59,6 @@ export default class Category extends Vue {
     }
 
     this.items = items;
-  }
-
-  public load() {
-    this.$axios.get('/api/category')
-      .then((res) => this.categories = res.data);
-    this.$axios.get('/api/project')
-      .then((res) => this.projects = res.data);
   }
 
   public timeString(duration: number) {
