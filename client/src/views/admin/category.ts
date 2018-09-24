@@ -29,7 +29,7 @@ export default class Category extends Vue {
 
   public load() {
     this.edit = false;
-    this.$axios.get('/api/admin/category')
+    this.$axios.get('/api/category')
       .then((res) => this.categories = res.data);
   }
 

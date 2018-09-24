@@ -29,7 +29,7 @@ export default class Project extends Vue {
 
   public load() {
     this.edit = false;
-    this.$axios.get('/api/admin/project')
+    this.$axios.get('/api/project')
       .then((res) => this.projects = res.data);
   }
 

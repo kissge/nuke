@@ -3,16 +3,16 @@ import { Project } from './project.entity';
 import { ProjectService } from './project.service';
 import { SaveProjectDto } from './save-project.dto';
 
-@Controller('api/admin/project')
+@Controller('api')
 export class ProjectController {
   constructor(private readonly projectService: ProjectService) {}
 
-  @Get()
+  @Get('project')
   findAll() {
     return this.projectService.findAll();
   }
 
-  @Post()
+  @Post('admin/project')
   async save(@Body() saveProjectDto: SaveProjectDto) {
     try {
       return await this.projectService.save(saveProjectDto as Project);

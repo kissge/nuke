@@ -3,16 +3,16 @@ import { Category } from './category.entity';
 import { CategoryService } from './category.service';
 import { SaveCategoryDto } from './save-category.dto';
 
-@Controller('api/admin/category')
+@Controller('api')
 export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}
 
-  @Get()
+  @Get('category')
   findAll() {
     return this.categoryService.findAll();
   }
 
-  @Post()
+  @Post('admin/category')
   async save(@Body() saveCategoryDto: SaveCategoryDto) {
     try {
       return await this.categoryService.save(saveCategoryDto as Category);
