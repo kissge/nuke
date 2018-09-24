@@ -38,7 +38,7 @@
       </router-link>
     </v-toolbar>
     <v-content>
-      <router-view />
+      <router-view :key="$route.fullPath" />
     </v-content>
   </v-app>
 </template>

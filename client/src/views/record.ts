@@ -31,34 +31,55 @@ export default class Category extends Vue {
   }
 
   public load() {
-    const items = [];
-    let cursor = 0;
+    this.$axios.get(`/api/record/${this.month}`)
+      .then((res) => {
+        this.records = res.data;
+        const items = [];
+        let cursor = 0;
 
-    for (const date = moment(this.month + '-01').startOf('month');
-         date <= moment(this.month + '-01').endOf('month');
-         date.add(1, 'day')) {
-      const yyyymmdd = date.format('YYYY-MM-DD');
+        for (const date = moment(this.month + '-01').startOf('month');
+             date <= moment(this.month + '-01').endOf('month');
+             date.add(1, 'day')) {
+          const yyyymmdd = date.format('YYYY-MM-DD');
 
-      if (cursor < this.records.length && this.records[cursor].date === yyyymmdd) {
-        items.push({
-          dow: date.format('dd'),
-          ...this.records[cursor],
-        });
+          if (cursor < this.records.length && this.records[cursor].date === yyyymmdd) {
+            {
+              const {project, category, duration, id, title} = this.records[cursor];
+              items.push({
+                dow: date.format('dd'),
+                project: project.id,
+                category: category.id,
+                date: this.records[cursor].date,
+                duration: this.timeString(duration),
+                id,
+                title,
+              });
+            }
 
-        while (++cursor < this.records.length && this.records[cursor].date === yyyymmdd) {
-          items.push(this.records[cursor]);
+            while (++cursor < this.records.length && this.records[cursor].date === yyyymmdd) {
+              const {project, category, duration, id, title} = this.records[cursor];
+              items.push({
+                project: project.id,
+                category: category.id,
+                date: this.records[cursor].date,
+                duration: this.timeString(duration),
+                id,
+                title,
+              });
+            }
+
+            items.push({});
+          } else {
+            items.push({
+              dow: date.format('dd'),
+              date: yyyymmdd,
+            });
+          }
         }
 
-        items.push({});
-      } else {
-        items.push({
-          dow: date.format('dd'),
-          date: yyyymmdd,
-        });
-      }
-    }
+        this.items = items;
 
-    this.items = items;
+      });
   }
 
   public timeString(duration: number) {
@@ -85,6 +106,16 @@ export default class Category extends Vue {
     return typeof seed === typeof undefined ?
       '' :
       this.colorHash.hex(String(seed + type * 1000));
+  }
+
+  public save(record: any) {
+    const payload = {...record};
+    const hh = payload.duration.substr(0, 2);
+    const mm = payload.duration.slice(-2);
+    payload.duration = parseInt(hh, 10) * 60 + parseInt(mm, 10);
+    this.$axios.post('/api/record', payload)
+      .then((res) => this.load()) // TODO:
+      .catch((err) => alert(err.response.data.message)); // TODO:
   }
 
   private pad(n: number, len = 2) {
