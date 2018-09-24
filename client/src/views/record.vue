@@ -3,12 +3,32 @@
     <v-flex sm12>
       <v-card>
         <v-list class="superwide">
-          <v-list-tile ripple @click="1">
-            before
+          <v-list-tile>
+            <v-dialog
+              ref="dialog"
+              v-model="modal"
+              :return-value.sync="month"
+              lazy
+              full-width
+              width="290px"
+            >
+              <v-text-field
+                slot="activator"
+                v-model="month"
+                readonly
+                prepend-icon="calendar_today"
+                full-width
+                solo
+                flat
+                class="display-1 ma-2"
+              ></v-text-field>
+              <v-date-picker v-model="month" type="month" locale="ja" scrollable>
+                <v-spacer></v-spacer>
+                <v-btn flat color="primary" @click="modal = false">キャンセル</v-btn>
+                <v-btn flat color="primary" @click="$refs.dialog.save(month)">OK</v-btn>
+              </v-date-picker>
+            </v-dialog>
           </v-list-tile>
-          <v-subheader class="display-1">
-            2018/09
-          </v-subheader>
           <template v-for="(item, index) in items">
             <v-divider v-if="item.dow" :key="index" />
             <v-list-tile :key="item.title">
@@ -81,6 +101,5 @@
 
   .superwide .v-list__tile {
     height: auto !important;
-    overflow-y: auto !important;
   }
 </style>

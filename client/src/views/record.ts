@@ -10,6 +10,8 @@ export default class Category extends Vue {
   public projects: Array<{id: number, name: string}> = [];
   public records: any[] = [];
   public items: any[] = [];
+  public modal = false;
+  public month = '2018-09';
 
   private colorHash = new ColorHash({lightness: 0.7});
 
