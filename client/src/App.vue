@@ -18,9 +18,7 @@
             <v-list-tile-title v-text="item.title"></v-list-tile-title>
           </v-list-tile-content>
           <v-list-tile-action v-if="item.admin">
-            <v-badge left>
-              <v-icon slot="badge" dark>verified_user</v-icon>
-            </v-badge>
+            <v-icon color="primary">verified_user</v-icon>
           </v-list-tile-action>
         </v-list-tile>
       </v-list>
@@ -35,6 +33,7 @@
             <img :src="user.avatar">
           </v-avatar>
           {{ user.name }}
+          <v-icon color="primary" title="Administrator" v-if="user.isAdmin">verified_user</v-icon>
         </v-chip>
       </router-link>
     </v-toolbar>
