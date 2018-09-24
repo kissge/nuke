@@ -9,4 +9,12 @@ export class ProjectService {
     @InjectRepository(Project)
     private readonly projectRepository: Repository<Project>,
   ) {}
+
+  findAll() {
+    return this.projectRepository.find();
+  }
+
+  async save(project: Project) {
+    return await this.projectRepository.save(project);
+  }
 }
