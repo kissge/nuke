@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import Home from './views/home.vue';
 import Login from './views/login.vue';
+import Record from './views/record.vue';
 import Project from './views/admin/project.vue';
 import Category from './views/admin/category.vue';
 
@@ -18,6 +19,11 @@ export default new Router({
       path: '/login',
       name: 'login',
       component: Login,
+    },
+    {
+      path: '/record',
+      name: 'record',
+      component: Record,
     },
     {
       path: '/admin/project',
