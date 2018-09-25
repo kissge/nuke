@@ -2,7 +2,7 @@
   <v-layout row>
     <v-flex sm12>
       <v-card>
-        <v-list class="superwide">
+        <v-list class="superwide" v-if="items.length > 0">
           <v-list-tile>
             <v-dialog
               ref="dialog"
@@ -88,6 +88,7 @@
             </v-list-tile>
           </template>
         </v-list>
+        <Nekomimi v-else />
       </v-card>
     </v-flex>
   </v-layout>

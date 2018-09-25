@@ -1,6 +1,7 @@
 import { Component, Vue } from 'vue-property-decorator';
 import moment from 'moment';
 import ColorHash from 'color-hash';
+import Nekomimi from './nekomimi.vue';
 
 moment.locale('ja');
 
@@ -17,7 +18,9 @@ interface Item {
   valid?: boolean;
 }
 
-@Component({})
+@Component({
+  components: {Nekomimi},
+})
 export default class Category extends Vue {
   public categories: Array<{id: number, name: string}> = [];
   public projects: Array<{id: number, name: string}> = [];
