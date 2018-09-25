@@ -4,6 +4,8 @@ import { State } from 'vuex-class';
 @Component({})
 export default class App extends Vue {
   @State public user: any;
+  @State public snackText?: string;
+  public snack = false;
 
   public drawer = true;
   public items?: any[] = [];
@@ -73,6 +75,11 @@ export default class App extends Vue {
         ]);
       }
     }
+  }
+
+  @Watch('snackText')
+  public showSnack(value: any, old: any) {
+    this.snack = true;
   }
 
   public logout() {

@@ -170,9 +170,18 @@ export default class Category extends Vue {
 
         return payload;
       });
+
+    if (payloads.some((r) => !r.valid)) {
+      this.$store.commit('showSnack', '不備があります');
+      return;
+    }
+
     this.$axios.post('/api/record', payloads)
-      .then((res) => this.load()) // TODO:
-      .catch((err) => alert(err.response.data.message)); // TODO:
+      .then((res) => {
+        this.load();
+        this.$store.commit('showSnack', '保存しました');
+      })
+      .catch((err) => this.$store.commit('showSnack', err.response.data.message));
   }
 
   private pad(n: number, len = 2) {

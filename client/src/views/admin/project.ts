@@ -42,7 +42,10 @@ export default class Project extends Vue {
   public submit() {
     if ((this.$refs.edit as any).validate()) {
       this.$axios.post('/api/admin/project', this.editTarget)
-        .then((res) => this.load())
+        .then((res) => {
+          this.load();
+          this.$store.commit('showSnack', '保存しました');
+        })
         .catch((err) => this.editError = err.response.data.message);
     }
   }

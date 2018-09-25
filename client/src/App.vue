@@ -40,6 +40,9 @@
     <v-content>
       <router-view :key="$route.fullPath" />
     </v-content>
+    <v-snackbar v-model="snack" top>
+      {{ snackText }}
+    </v-snackbar>
   </v-app>
 </template>
 
