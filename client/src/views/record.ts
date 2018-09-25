@@ -14,6 +14,7 @@ interface Item {
   title?: string;
   empty?: boolean;
   modified?: boolean;
+  valid?: boolean;
 }
 
 @Component({})
@@ -73,7 +74,7 @@ export default class Category extends Vue {
               items.push({
                 project: project.id,
                 category: category.id,
-                date: this.records[cursor].date,
+                date: yyyymmdd,
                 duration: this.timeString(duration),
                 id,
                 title,
@@ -81,6 +82,7 @@ export default class Category extends Vue {
             }
 
             items.push({
+              date: yyyymmdd,
               duration: '0',
               empty: true,
             });
@@ -101,10 +103,12 @@ export default class Category extends Vue {
 
   public modify(item: Item) {
     item.modified = true;
+    item.valid = this.isValid(item);
 
     if (item.empty) {
       item.empty = false;
       this.items.splice(this.items.indexOf(item) + 1, 0, {
+        date: item.date,
         duration: '0',
         empty: true,
       });
@@ -178,5 +182,12 @@ export default class Category extends Vue {
     } else {
       return str;
     }
+  }
+
+  private isValid(item: Item) {
+    return !!(item.duration.match(/^\d{2}:?\d{2}$/) &&
+              item.title &&
+              item.project &&
+              item.category);
   }
 }

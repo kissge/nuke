@@ -36,7 +36,7 @@
           </v-list-tile>
           <template v-for="(item, index) in items">
             <v-divider v-if="item.dow" :key="index" />
-            <v-list-tile :key="month + index" v-bind:class="{modified: item.modified}">
+            <v-list-tile :key="month + index" v-bind:class="{ modified: item.modified, invalid: item.valid === false }">
               <v-list-tile-avatar>
                 <template v-if="item.dow">
                   <span class="headline">{{ item.date.slice(-2) }}</span><br>{{ item.dow }}
@@ -107,5 +107,9 @@
 
   .modified {
     background-color: #bce3f8;
+  }
+
+  .invalid {
+    background-color: #f8bce3;
   }
 </style>
