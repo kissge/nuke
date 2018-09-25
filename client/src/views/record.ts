@@ -99,6 +99,20 @@ export default class Category extends Vue {
       });
   }
 
+  public modify(item: Item) {
+    item.modified = true;
+
+    if (item.empty) {
+      item.empty = false;
+      this.items.splice(this.items.indexOf(item) + 1, 0, {
+        duration: '0',
+        empty: true,
+      });
+    }
+
+    this.$forceUpdate();
+  }
+
   public timeString(duration: number) {
     return `${this.pad(Math.floor(duration / 60))}:${this.pad(duration % 60)}`;
   }
@@ -132,6 +146,8 @@ export default class Category extends Vue {
   public deleteItem(item: Item) {
     if (item.empty) {
       item.modified = false;
+    } else if (!item.id) {
+      this.items.splice(this.items.indexOf(item), 1);
     }
 
     // TODO:

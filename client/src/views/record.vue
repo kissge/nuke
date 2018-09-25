@@ -45,10 +45,10 @@
               <v-list-tile-content>
                 <div style="width: 100%; display: flex; flex-wrap: wrap;">
                   <div>
-                    <v-text-field mask="time" v-model="item.duration" style="width: 3em" @change="item.modified = true; $forceUpdate()" />
+                    <v-text-field mask="time" v-model="item.duration" style="width: 3em" @change="modify(item)" />
                   </div>
                   <div style="flex-grow: 1" class="mx-2">
-                    <v-text-field placeholder="作業内容" v-model="item.title" @change="item.modified = true; $forceUpdate()" />
+                    <v-text-field placeholder="作業内容" v-model="item.title" @change="modify(item)" />
                   </div>
                   <v-menu offset-y>
                     <v-btn slot="activator" depressed :color="color(item.project, 1)">
@@ -60,7 +60,7 @@
                     <v-list>
                       <v-list-tile v-for="(project, pindex) in projects"
                         :key="pindex"
-                        @click="item.project = project.id; item.modified = true; $forceUpdate()">
+                        @click="item.project = project.id; modify(item)">
                         <v-list-tile-title>{{ project.name }}</v-list-tile-title>
                       </v-list-tile>
                     </v-list>
@@ -75,7 +75,7 @@
                     <v-list>
                       <v-list-tile v-for="(category, cindex) in categories"
                         :key="cindex"
-                        @click="item.category = category.id; item.modified = true; $forceUpdate()">
+                        @click="item.category = category.id; modify(item)">
                         <v-list-tile-title>{{ category.name }}</v-list-tile-title>
                       </v-list-tile>
                     </v-list>
