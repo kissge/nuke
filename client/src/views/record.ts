@@ -152,9 +152,18 @@ export default class Category extends Vue {
       item.modified = false;
     } else if (!item.id) {
       this.items.splice(this.items.indexOf(item), 1);
+    } else if (confirm('削除しますか？\nこの操作は元に戻せません。')) {
+      this.$axios.delete(`/api/record/${item.id}`)
+        .then((res) => {
+          const index = this.items.indexOf(item);
+          if (item.dow) {
+            this.items[index + 1].dow = item.dow;
+          }
+          this.items.splice(index, 1);
+          this.$store.commit('showSnack', '削除しました');
+        })
+        .catch((err) => this.$store.commit('showSnack', err.response.data.message));
     }
-
-    // TODO:
 
     this.$forceUpdate();
   }

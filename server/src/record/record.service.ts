@@ -29,4 +29,9 @@ export class RecordService {
   async save(records: Record[]) {
     return await this.recordRepository.save(records);
   }
+
+  delete(id: number, user: User) {
+    // FIXME: user id validation
+    return this.recordRepository.delete(id);
+  }
 }
