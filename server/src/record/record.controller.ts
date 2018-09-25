@@ -17,12 +17,15 @@ export class RecordController {
   }
 
   @Post('record')
-  async save(@Req() req, @Body() saveRecordDto: SaveRecordDto) {
+  async save(@Req() req, @Body() saveRecordsDto: SaveRecordDto[]) {
     try {
-      const record = saveRecordDto as Record;
-      record.user = req.user;
+      const records = saveRecordsDto.map((r) => {
+        const record = r as Record;
+        record.user = req.user;
+        return record;
+      });
 
-      return await this.recordService.save(record);
+      return await this.recordService.save(records);
     } catch (error) {
       throw new HttpException(error.code, 400);
     }

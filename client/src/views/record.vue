@@ -28,10 +28,15 @@
                 <v-btn flat color="primary" @click="$router.push({ name: 'record', params: { year: month.substr(0, 4), month: month.slice(-2) } })">OK</v-btn>
               </v-date-picker>
             </v-dialog>
+            <v-spacer />
+            <v-btn large color="primary" @click="save" :disabled="modifiedCount() == 0">
+              {{ modifiedCount() }}件を保存
+              <v-icon class="ml-3">save</v-icon>
+            </v-btn>
           </v-list-tile>
           <template v-for="(item, index) in items">
             <v-divider v-if="item.dow" :key="index" />
-            <v-list-tile :key="month + index">
+            <v-list-tile :key="month + index" v-bind:class="{modified: item.modified}">
               <v-list-tile-avatar>
                 <template v-if="item.dow">
                   <span class="headline">{{ item.date.slice(-2) }}</span><br>{{ item.dow }}
@@ -40,10 +45,10 @@
               <v-list-tile-content>
                 <div style="width: 100%; display: flex; flex-wrap: wrap;">
                   <div>
-                    <v-text-field mask="time" v-model="item.duration" style="width: 3em" />
+                    <v-text-field mask="time" v-model="item.duration" style="width: 3em" @change="item.modified = true; $forceUpdate()" />
                   </div>
                   <div style="flex-grow: 1" class="mx-2">
-                    <v-text-field placeholder="作業内容" v-model="item.title" />
+                    <v-text-field placeholder="作業内容" v-model="item.title" @change="item.modified = true; $forceUpdate()" />
                   </div>
                   <v-menu offset-y>
                     <v-btn slot="activator" depressed :color="color(item.project, 1)">
@@ -55,7 +60,7 @@
                     <v-list>
                       <v-list-tile v-for="(project, pindex) in projects"
                         :key="pindex"
-                        @click="item.project = project.id; $forceUpdate()">
+                        @click="item.project = project.id; item.modified = true; $forceUpdate()">
                         <v-list-tile-title>{{ project.name }}</v-list-tile-title>
                       </v-list-tile>
                     </v-list>
@@ -70,15 +75,12 @@
                     <v-list>
                       <v-list-tile v-for="(category, cindex) in categories"
                         :key="cindex"
-                        @click="item.category = category.id; $forceUpdate()">
+                        @click="item.category = category.id; item.modified = true; $forceUpdate()">
                         <v-list-tile-title>{{ category.name }}</v-list-tile-title>
                       </v-list-tile>
                     </v-list>
                   </v-menu>
-                  <v-btn icon @click="save(item)">
-                    <v-icon color="primary">save</v-icon>
-                  </v-btn>
-                  <v-btn icon>
+                  <v-btn icon :disabled="item.empty && !item.modified" @click="deleteItem(item)">
                     <v-icon color="error">delete</v-icon>
                   </v-btn>
                 </div>
@@ -101,5 +103,9 @@
 
   .superwide .v-list__tile {
     height: auto !important;
+  }
+
+  .modified {
+    background-color: #bce3f8;
   }
 </style>

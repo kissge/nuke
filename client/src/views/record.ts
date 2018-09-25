@@ -4,12 +4,24 @@ import ColorHash from 'color-hash';
 
 moment.locale('ja');
 
+interface Item {
+  dow?: string;
+  project?: number;
+  category?: number;
+  date?: string;
+  duration: string;
+  id?: number;
+  title?: string;
+  empty?: boolean;
+  modified?: boolean;
+}
+
 @Component({})
 export default class Category extends Vue {
   public categories: Array<{id: number, name: string}> = [];
   public projects: Array<{id: number, name: string}> = [];
   public records: any[] = [];
-  public items: any[] = [];
+  public items: Item[] = [];
   public modal = false;
   public month = moment().format('YYYY-MM');
 
@@ -34,7 +46,7 @@ export default class Category extends Vue {
     this.$axios.get(`/api/record/${this.month}`)
       .then((res) => {
         this.records = res.data;
-        const items = [];
+        const items: Item[] = [];
         let cursor = 0;
 
         for (const date = moment(this.month + '-01').startOf('month');
@@ -68,11 +80,16 @@ export default class Category extends Vue {
               });
             }
 
-            items.push({});
+            items.push({
+              duration: '0',
+              empty: true,
+            });
           } else {
             items.push({
               dow: date.format('dd'),
               date: yyyymmdd,
+              duration: '0',
+              empty: true,
             });
           }
         }
@@ -108,12 +125,32 @@ export default class Category extends Vue {
       this.colorHash.hex(String(seed + type * 1000));
   }
 
+  public modifiedCount() {
+    return this.items.filter((i) => i.modified).length;
+  }
+
+  public deleteItem(item: Item) {
+    if (item.empty) {
+      item.modified = false;
+    }
+
+    // TODO:
+
+    this.$forceUpdate();
+  }
+
   public save(record: any) {
-    const payload = {...record};
-    const hh = payload.duration.substr(0, 2);
-    const mm = payload.duration.slice(-2);
-    payload.duration = parseInt(hh, 10) * 60 + parseInt(mm, 10);
-    this.$axios.post('/api/record', payload)
+    const payloads = this.items
+      .filter((i) => i.modified)
+      .map((r) => {
+        const payload = {...r};
+        const hh = payload.duration.substr(0, 2);
+        const mm = payload.duration.slice(-2);
+        payload.duration = String(parseInt(hh, 10) * 60 + parseInt(mm, 10));
+
+        return payload;
+      });
+    this.$axios.post('/api/record', payloads)
       .then((res) => this.load()) // TODO:
       .catch((err) => alert(err.response.data.message)); // TODO:
   }

@@ -26,7 +26,7 @@ export class RecordService {
       .getMany();
   }
 
-  async save(record: Record) {
-    return await this.recordRepository.save(record);
+  async save(records: Record[]) {
+    return await this.recordRepository.save(records);
   }
 }
