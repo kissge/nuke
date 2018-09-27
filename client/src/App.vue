@@ -25,7 +25,9 @@
     </v-navigation-drawer>
     <v-toolbar app clipped-left style="user-select: none" color="primary" dark>
       <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
-      <v-toolbar-title>Nuke</v-toolbar-title>
+      <v-toolbar-title>
+        <router-link to="/" class="white--text" style="text-decoration: none">Nuke</router-link>
+      </v-toolbar-title>
       <v-spacer></v-spacer>
       <router-link to="/settings" tag="div" v-if="user">
         <v-chip close v-on:input="logout">
