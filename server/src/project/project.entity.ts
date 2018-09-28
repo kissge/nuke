@@ -6,7 +6,7 @@ export class Project {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ length: 255, unique: true })
+  @Column({ length: 127, unique: true })
   name: string;
 
   @OneToMany(type => Record, record => record.project)

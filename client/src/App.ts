@@ -83,7 +83,7 @@ export default class App extends Vue {
   }
 
   public logout() {
-    location.href = '/auth/logout';
+    location.href = '/nuke/auth/logout';
     return false;
   }
 }

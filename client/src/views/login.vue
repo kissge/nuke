@@ -8,7 +8,7 @@
       </v-flex>
       <v-flex>
         <v-container fill-height>
-          <a href="/auth/google" style="width: 100%">
+          <a href="/nuke/auth/google" style="width: 100%">
             <img src="@/assets/btn_google_signin_light_normal_web@2x.png" style="width: 100%">
           </a>
         </v-container>

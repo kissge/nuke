@@ -7,7 +7,7 @@ import axios from 'axios';
 // axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 
 const config = {
-  // baseURL: process.env.baseURL || process.env.apiUrl || ""
+  baseURL: '/nuke',
   // timeout: 60 * 1000, // Timeout
   // withCredentials: true, // Check cross-site Access-Control
 };
@@ -34,8 +34,8 @@ _axios.interceptors.response.use(
   (err) => {
     // Do something with response error
     if (err.response.status === 401) {
-      if (location.pathname !== '/' || location.hash !== '#/login') {
-        location.href = '/#/login';
+      if (location.pathname !== '/nuke/' || location.hash !== '#/login') {
+        location.href = '/nuke/#/login';
       }
 
       return Promise.reject();

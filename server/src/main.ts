@@ -19,6 +19,7 @@ async function bootstrap() {
   passport.serializeUser((user, done) => done(null, user));
   passport.deserializeUser((user, done) => done(null, user));
 
-  await app.listen(3000);
+  app.setGlobalPrefix('nuke');
+  await app.listen(3002);
 }
 bootstrap();
