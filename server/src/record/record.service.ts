@@ -21,7 +21,7 @@ export class RecordService {
       .leftJoinAndSelect('r.project', 'p')
       .leftJoinAndSelect('r.category', 'c')
       .where('r.date BETWEEN :start AND :end', {start, end})
-      .where('r.user = :user', {user: user.id})
+      .andWhere('r.user = :user', {user: user.id})
       .orderBy('r.date')
       .getMany();
   }
