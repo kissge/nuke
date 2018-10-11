@@ -163,9 +163,9 @@ export default class Category extends Vue {
             this.items[index + 1].dow = item.dow;
           }
           this.items.splice(index, 1);
-          this.$store.commit('showSnack', '削除しました');
+          this.$store.dispatch('showSnack', '削除しました');
         })
-        .catch((err) => this.$store.commit('showSnack', err.response.data.message));
+        .catch((err) => this.$store.dispatch('showSnack', err.response.data.message));
     }
 
     this.$forceUpdate();
@@ -184,16 +184,16 @@ export default class Category extends Vue {
       });
 
     if (payloads.some((r) => !r.valid)) {
-      this.$store.commit('showSnack', '不備があります');
+      this.$store.dispatch('showSnack', '不備があります');
       return;
     }
 
     this.$axios.post('/api/record', payloads)
       .then((res) => {
         this.load();
-        this.$store.commit('showSnack', '保存しました');
+        this.$store.dispatch('showSnack', '保存しました');
       })
-      .catch((err) => this.$store.commit('showSnack', err.response.data.message));
+      .catch((err) => this.$store.dispatch('showSnack', err.response.data.message));
   }
 
   private pad(n: number, len = 2) {

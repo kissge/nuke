@@ -15,6 +15,9 @@ export default new Vuex.Store({
     },
   },
   actions: {
-
+    showSnack: (context, text) => {
+      context.commit('showSnack', '');
+      setTimeout(() => context.commit('showSnack', text));
+    },
   },
 });

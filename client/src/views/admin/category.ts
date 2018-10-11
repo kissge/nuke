@@ -44,7 +44,7 @@ export default class Category extends Vue {
       this.$axios.post('/api/admin/category', this.editTarget)
         .then((res) => {
           this.load();
-          this.$store.commit('showSnack', '保存しました');
+          this.$store.dispatch('showSnack', '保存しました');
         })
         .catch((err) => this.editError = err.response.data.message);
     }
