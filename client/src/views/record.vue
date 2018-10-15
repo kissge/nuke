@@ -70,10 +70,10 @@
               <v-list-tile-content v-if="editable() || !item.empty">
                 <div style="width: 100%; display: flex; flex-wrap: wrap;">
                   <div>
-                    <v-text-field mask="time" v-model="item.duration" style="width: 3em" @change="modify(item)" readonly="!editable()" />
+                    <v-text-field mask="time" v-model="item.duration" style="width: 3em" @change="modify(item)" :readonly="!editable()" />
                   </div>
                   <div style="flex-grow: 1" class="mx-2">
-                    <v-text-field placeholder="作業内容" v-model="item.title" @change="modify(item)" readonly="!editable()" />
+                    <v-text-field placeholder="作業内容" v-model="item.title" @change="modify(item)" :readonly="!editable()" />
                   </div>
                   <v-menu offset-y>
                     <v-btn slot="activator" depressed :color="color(item.project, 1)">
