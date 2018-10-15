@@ -1,8 +1,8 @@
 import { Component, Vue } from 'vue-property-decorator';
 import { State } from 'vuex-class';
 import moment from 'moment';
-import ColorHash from 'color-hash';
 import Nekomimi from './nekomimi.vue';
+import Utility from '../utility';
 
 moment.locale('ja');
 
@@ -36,7 +36,7 @@ export default class Category extends Vue {
   public selectedUserId: number | null = null;
   public users = [];
 
-  private colorHash = new ColorHash({lightness: 0.7});
+  public color = (seed: number, type: number) => Utility.color(seed, type);
 
   public mounted() {
     this.$axios.get('/api/category')
@@ -47,7 +47,7 @@ export default class Category extends Vue {
     const year = parseInt(this.$route.params.year, 10);
     const month = parseInt(this.$route.params.month, 10);
     if (1900 <= year && year <= 9999 && 1 <= month && month <= 12) {
-      this.month = `${year}-${this.pad(month)}`;
+      this.month = `${year}-${Utility.pad(month)}`;
     }
 
     this.selectedUserId = parseInt(this.$route.params.user, 10) || null;
@@ -150,7 +150,7 @@ export default class Category extends Vue {
   }
 
   public timeString(duration: number) {
-    return `${this.pad(Math.floor(duration / 60))}:${this.pad(duration % 60)}`;
+    return `${Utility.pad(Math.floor(duration / 60))}:${Utility.pad(duration % 60)}`;
   }
 
   public categoryName(id: number) {
@@ -178,12 +178,6 @@ export default class Category extends Vue {
         user: String(user || this.selectedUserId),
       },
     });
-  }
-
-  public color(seed: number, type: number) {
-    return typeof seed === typeof undefined ?
-      '' :
-      this.colorHash.hex(String(seed + type * 1000));
   }
 
   public modifiedCount() {
@@ -238,15 +232,6 @@ export default class Category extends Vue {
 
   public editable() {
     return this.selectedUserId === null || this.user.id === this.selectedUserId;
-  }
-
-  private pad(n: number, len = 2) {
-    const str = String(n);
-    if (str.length < len) {
-      return Array(len - str.length + 1).join('0') + str;
-    } else {
-      return str;
-    }
   }
 
   private isValid(item: Item) {

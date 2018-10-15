@@ -1,7 +1,7 @@
 import { Component, Vue } from 'vue-property-decorator';
 import moment from 'moment';
-import ColorHash from 'color-hash';
 import Bar from '../components/Bar';
+import Utility from '../utility';
 
 moment.locale('ja');
 
@@ -27,7 +27,7 @@ export default class Home extends Vue {
     tooltips: {
       callbacks: {
         label: (item: any, data: any) =>
-          `${Math.floor(item.xLabel / 60)}:${this.pad(item.xLabel % 60)} ` +
+          `${Math.floor(item.xLabel / 60)}:${Utility.pad(item.xLabel % 60)} ` +
           `${data.datasets[item.datasetIndex].label}`,
       },
     },
@@ -35,8 +35,6 @@ export default class Home extends Vue {
 
   public categories: Array<{id: number, name: string}> = [];
   public projects: Array<{id: number, name: string}> = [];
-
-  private colorHash = new ColorHash({lightness: 0.7});
 
   public mounted() {
     Promise.all([this.$axios.get('/api/category'),
@@ -55,7 +53,7 @@ export default class Home extends Vue {
           datasets.categoryWise[id] = {};
           this.categoryWise.push({
             label: name,
-            backgroundColor: this.color(id, 2),
+            backgroundColor: Utility.color(id, 2),
             borderColor: '#ccc',
             borderWidth: 1,
             stack: 'stack',
@@ -67,7 +65,7 @@ export default class Home extends Vue {
           datasets.projectWise[id] = {};
           this.projectWise.push({
             label: name,
-            backgroundColor: this.color(id, 1),
+            backgroundColor: Utility.color(id, 1),
             borderColor: '#ccc',
             borderWidth: 1,
             stack: 'stack',
@@ -95,22 +93,5 @@ export default class Home extends Vue {
           });
         }
       });
-  }
-
-  // TODO: no copipe
-  public color(seed: number, type: number) {
-    return typeof seed === typeof undefined ?
-      '' :
-      this.colorHash.hex(String(seed + type * 1000));
-  }
-
-  // TODO: no copipe
-  private pad(n: number, len = 2) {
-    const str = String(n);
-    if (str.length < len) {
-      return Array(len - str.length + 1).join('0') + str;
-    } else {
-      return str;
-    }
   }
 }
