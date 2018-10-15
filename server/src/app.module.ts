@@ -9,6 +9,7 @@ import { UserModule } from './user/user.module';
 import { RecordModule } from './record/record.module';
 import { ProjectModule } from './project/project.module';
 import { CategoryModule } from './category/category.module';
+import { StatModule } from './stat/stat.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { CategoryModule } from './category/category.module';
     RecordModule,
     ProjectModule,
     CategoryModule,
+    StatModule,
   ],
   controllers: [AppController],
   providers: [AppService],
