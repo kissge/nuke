@@ -34,4 +34,19 @@ export class RecordService {
     // FIXME: user id validation
     return this.recordRepository.delete(id);
   }
+
+  weekly(user: User) {
+    return this.recordRepository
+      .createQueryBuilder('r')
+      .select('projectId')
+      .addSelect('categoryId')
+      .addSelect('YEARWEEK(date)', 'week')
+      .addSelect('SUM(duration)', 'total')
+      .where('r.user = :user', {user: user.id})
+      .andWhere('date BETWEEN DATE_SUB(NOW(), INTERVAL 7 week) AND NOW()')
+      .groupBy('projectId')
+      .addGroupBy('categoryId')
+      .addGroupBy('YEARWEEK(date)')
+      .getRawMany();
+  }
 }
