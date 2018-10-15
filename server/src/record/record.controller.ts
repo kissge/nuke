@@ -7,17 +7,23 @@ import { SaveRecordDto } from './save-record.dto';
 export class RecordController {
   constructor(private readonly recordService: RecordService) {}
 
-  @Get('record/:yyyymm')
+  @Get('record/:yyyymm/:user?')
   findAll(@Req() req, @Param() params) {
     if (!params.yyyymm.match(/^\d{4}-(?:0\d|1[012])/)) {
       throw new HttpException('Invalid query', 400);
     }
 
-    return this.recordService.findWithinMonth(params.yyyymm, req.user);
+    if (!req.user.isAdmin) {
+      // silently ignore
+      params.user = null;
+    }
+
+    return this.recordService.findWithinMonth(params.yyyymm, params.user || req.user.id);
   }
 
   @Post('record')
   async save(@Req() req, @Body() saveRecordsDto: SaveRecordDto[]) {
+    // FIXME: user id should be checked on update
     try {
       const records = saveRecordsDto.map((r) => {
         const record = r as Record;
@@ -33,6 +39,7 @@ export class RecordController {
 
   @Delete('record/:id')
   async delete(@Req() req, @Param() id: number) {
+    // FIXME: user id should be checked
     try {
       return await this.recordService.delete(id, req.user);
     } catch (error) {

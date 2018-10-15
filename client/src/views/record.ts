@@ -1,4 +1,5 @@
 import { Component, Vue } from 'vue-property-decorator';
+import { State } from 'vuex-class';
 import moment from 'moment';
 import ColorHash from 'color-hash';
 import Nekomimi from './nekomimi.vue';
@@ -22,12 +23,18 @@ interface Item {
   components: {Nekomimi},
 })
 export default class Category extends Vue {
+  @State public user: any;
+
   public categories: Array<{id: number, name: string}> = [];
   public projects: Array<{id: number, name: string}> = [];
   public records: any[] = [];
   public items: Item[] = [];
   public modal = false;
   public month = moment().format('YYYY-MM');
+
+  public selectedUser = null;
+  public selectedUserId: number | null = null;
+  public users = [];
 
   private colorHash = new ColorHash({lightness: 0.7});
 
@@ -43,11 +50,33 @@ export default class Category extends Vue {
       this.month = `${year}-${this.pad(month)}`;
     }
 
+    this.selectedUserId = parseInt(this.$route.params.user, 10) || null;
+    this.$axios.get('/api/admin/user')
+      .then((res) => {
+        this.users = res.data;
+        this.selectedUser = this.user;
+
+        for (const user of res.data) {
+          if (user.id === this.selectedUserId) {
+            this.selectedUser = user;
+            break;
+          }
+        }
+      })
+      .catch((res) => {
+        if (res.response.status === 403) {
+          this.selectedUserId = null;
+          return Promise.resolve(res);
+        } else {
+          return Promise.reject(res);
+        }
+      });
+
     this.load();
   }
 
   public load() {
-    this.$axios.get(`/api/record/${this.month}`)
+    this.$axios.get(`/api/record/${this.month}/${this.selectedUserId || ''}`)
       .then((res) => {
         this.records = res.data;
         const items: Item[] = [];
@@ -140,6 +169,17 @@ export default class Category extends Vue {
     }
   }
 
+  public updateQuery(user?: number) {
+    this.$router.push({
+      name: 'record',
+      params: {
+        year: this.month.substr(0, 4),
+        month: this.month.slice(-2),
+        user: String(user || this.selectedUserId),
+      },
+    });
+  }
+
   public color(seed: number, type: number) {
     return typeof seed === typeof undefined ?
       '' :
@@ -194,6 +234,10 @@ export default class Category extends Vue {
         this.$store.dispatch('showSnack', '保存しました');
       })
       .catch((err) => this.$store.dispatch('showSnack', err.response.data.message));
+  }
+
+  public editable() {
+    return this.selectedUserId === null || this.user.id === this.selectedUserId;
   }
 
   private pad(n: number, len = 2) {
