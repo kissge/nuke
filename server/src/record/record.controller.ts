@@ -23,6 +23,7 @@ export class RecordController {
 
   @Post('record')
   async save(@Req() req, @Body() saveRecordsDto: SaveRecordDto[]) {
+    // FIXME: user id should be checked on update
     try {
       const records = saveRecordsDto.map((r) => {
         const record = r as Record;
@@ -38,6 +39,7 @@ export class RecordController {
 
   @Delete('record/:id')
   async delete(@Req() req, @Param() id: number) {
+    // FIXME: user id should be checked
     try {
       return await this.recordService.delete(id, req.user);
     } catch (error) {

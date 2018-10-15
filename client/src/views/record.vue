@@ -54,26 +54,26 @@
               </v-list>
             </v-menu>
 
-            <v-btn large color="primary" @click="save" :disabled="modifiedCount() == 0">
+            <v-btn large color="primary" @click="save" :disabled="!editable() || modifiedCount() == 0">
               {{ modifiedCount() }}件を保存
               <v-icon class="ml-3">save</v-icon>
             </v-btn>
           </v-list-tile>
           <template v-for="(item, index) in items">
             <v-divider v-if="item.dow" :key="index" />
-            <v-list-tile :key="month + index" v-bind:class="{ modified: item.modified, invalid: item.valid === false }">
+            <v-list-tile :key="month + index" v-bind:class="{ modified: item.modified, invalid: item.valid === false }" v-if="item.dow || !item.empty || editable()">
               <v-list-tile-avatar>
                 <template v-if="item.dow">
                   <span class="headline">{{ item.date.slice(-2) }}</span><br>{{ item.dow }}
                 </template>
               </v-list-tile-avatar>
-              <v-list-tile-content>
+              <v-list-tile-content v-if="editable() || !item.empty">
                 <div style="width: 100%; display: flex; flex-wrap: wrap;">
                   <div>
-                    <v-text-field mask="time" v-model="item.duration" style="width: 3em" @change="modify(item)" />
+                    <v-text-field mask="time" v-model="item.duration" style="width: 3em" @change="modify(item)" readonly="!editable()" />
                   </div>
                   <div style="flex-grow: 1" class="mx-2">
-                    <v-text-field placeholder="作業内容" v-model="item.title" @change="modify(item)" />
+                    <v-text-field placeholder="作業内容" v-model="item.title" @change="modify(item)" readonly="!editable()" />
                   </div>
                   <v-menu offset-y>
                     <v-btn slot="activator" depressed :color="color(item.project, 1)">
@@ -82,7 +82,7 @@
                       </span>
                       <v-icon>dvr</v-icon>
                     </v-btn>
-                    <v-list>
+                    <v-list v-if="editable()">
                       <v-list-tile v-for="(project, pindex) in projects"
                         :key="pindex"
                         @click="item.project = project.id; modify(item)">
@@ -97,7 +97,7 @@
                       </span>
                       <v-icon>category</v-icon>
                     </v-btn>
-                    <v-list>
+                    <v-list v-if="editable()">
                       <v-list-tile v-for="(category, cindex) in categories"
                         :key="cindex"
                         @click="item.category = category.id; modify(item)">
@@ -105,7 +105,7 @@
                       </v-list-tile>
                     </v-list>
                   </v-menu>
-                  <v-btn icon :disabled="item.empty && !item.modified" @click="deleteItem(item)">
+                  <v-btn icon :disabled="item.empty && !item.modified" @click="deleteItem(item)" v-if="editable()">
                     <v-icon color="error">delete</v-icon>
                   </v-btn>
                 </div>

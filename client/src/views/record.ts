@@ -236,6 +236,10 @@ export default class Category extends Vue {
       .catch((err) => this.$store.dispatch('showSnack', err.response.data.message));
   }
 
+  public editable() {
+    return this.selectedUserId === null || this.user.id === this.selectedUserId;
+  }
+
   private pad(n: number, len = 2) {
     const str = String(n);
     if (str.length < len) {
