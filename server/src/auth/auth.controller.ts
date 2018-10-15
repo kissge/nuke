@@ -7,12 +7,12 @@ export class AuthController {
   @UseGuards(AuthGuard('google'))
   callback(@Req() req, @Res() res) {
     req.login(req.user, _ => {});
-    res.redirect('/nuke');
+    res.redirect('/nuke/');
   }
 
   @Get('logout')
   logout(@Req() req, @Res() res) {
     req.logout();
-    res.redirect('/nuke');
+    res.redirect('/nuke/');
   }
 }
