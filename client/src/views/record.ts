@@ -137,6 +137,16 @@ export default class Category extends Vue {
     item.modified = true;
     item.valid = this.isValid(item);
 
+    if (item.project && !item.category) {
+      const project = this.projectName(item.project);
+      for (const {id, name} of this.categories) {
+        if (name === project) {
+          item.category = id;
+          break;
+        }
+      }
+    }
+
     if (item.empty) {
       item.empty = false;
       this.items.splice(this.items.indexOf(item) + 1, 0, {
