@@ -25,10 +25,35 @@
               <v-date-picker v-model="month" type="month" locale="ja" scrollable>
                 <v-spacer></v-spacer>
                 <v-btn flat color="primary" @click="modal = false">キャンセル</v-btn>
-                <v-btn flat color="primary" @click="$router.push({ name: 'record', params: { year: month.substr(0, 4), month: month.slice(-2) } })">OK</v-btn>
+                <v-btn flat color="primary" @click="updateQuery()">OK</v-btn>
               </v-date-picker>
             </v-dialog>
+
             <v-spacer />
+
+            <v-menu offset-y v-if="user && user.isAdmin && selectedUser">
+              <v-btn slot="activator" large>
+                <v-avatar size="24" class="mr-4">
+                  <img :src="selectedUser.avatar">
+                </v-avatar>
+                {{ selectedUser.name }}
+              </v-btn>
+              <v-list>
+                <v-list-tile v-for="(nuser, uindex) in users"
+                  :key="uindex"
+                  @click="updateQuery(nuser.id)">
+                  <v-list-tile-avatar>
+                    <v-avatar size="24" class="mr-2">
+                      <img :src="nuser.avatar">
+                    </v-avatar>
+                  </v-list-tile-avatar>
+                  <v-list-tile-title>
+                    {{ nuser.name }}
+                  </v-list-tile-title>
+                </v-list-tile>
+              </v-list>
+            </v-menu>
+
             <v-btn large color="primary" @click="save" :disabled="modifiedCount() == 0">
               {{ modifiedCount() }}件を保存
               <v-icon class="ml-3">save</v-icon>

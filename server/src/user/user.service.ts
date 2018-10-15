@@ -9,6 +9,10 @@ export class UserService {
     @InjectRepository(User) private readonly userRepository: Repository<User>,
   ) {}
 
+  findAll(): Promise<User[]> {
+    return this.userRepository.find();
+  }
+
   async findOneByGoogleProfile(profile): Promise<User> {
     const email = this.findEmail(profile);
     if (email) {

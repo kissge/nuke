@@ -21,7 +21,7 @@ export default new Router({
       component: Login,
     },
     {
-      path: '/record/:year?/:month?',
+      path: '/record/:year?/:month?/:user?',
       name: 'record',
       component: Record,
     },

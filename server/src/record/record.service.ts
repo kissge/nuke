@@ -12,7 +12,7 @@ export class RecordService {
     private readonly recordRepository: Repository<Record>,
   ) {}
 
-  findWithinMonth(yyyymm: string, user: User) {
+  findWithinMonth(yyyymm: string, user: number) {
     const start = yyyymm + '-01';
     const end = moment(start).endOf('month').format('YYYY-MM-DD');
 
@@ -21,7 +21,7 @@ export class RecordService {
       .leftJoinAndSelect('r.project', 'p')
       .leftJoinAndSelect('r.category', 'c')
       .where('r.date BETWEEN :start AND :end', {start, end})
-      .andWhere('r.user = :user', {user: user.id})
+      .andWhere('r.user = :user', {user})
       .orderBy('r.date')
       .getMany();
   }
