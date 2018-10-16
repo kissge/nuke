@@ -20,7 +20,9 @@ export default class Home extends Vue {
       xAxes: [{
         stacked: true,
         ticks: {
-          stepSize: 60,
+          callback: (value: number) =>
+            `${Math.floor(value / 60)}:${Utility.pad(value % 60)}`,
+          stepSize: 5 * 60,
         },
       }],
     },
@@ -53,7 +55,7 @@ export default class Home extends Vue {
           datasets.categoryWise[id] = {};
           this.categoryWise.push({
             label: name,
-            backgroundColor: Utility.color(id, 2),
+            backgroundColor: Utility.color(name),
             borderColor: '#ccc',
             borderWidth: 1,
             stack: 'stack',
@@ -65,7 +67,7 @@ export default class Home extends Vue {
           datasets.projectWise[id] = {};
           this.projectWise.push({
             label: name,
-            backgroundColor: Utility.color(id, 1),
+            backgroundColor: Utility.color(name),
             borderColor: '#ccc',
             borderWidth: 1,
             stack: 'stack',

@@ -1,10 +1,8 @@
 import ColorHash from 'color-hash';
 
 export default class Utility {
-  public static color(seed: number, type: number) {
-    return typeof seed === typeof undefined ?
-      '' :
-      this.colorHash.hex(String(seed + type * 1000));
+  public static color(seed?: string) {
+    return seed == null ? '' : this.colorHash.hex(seed);
   }
 
   public static pad(n: number, len = 2) {
@@ -16,5 +14,5 @@ export default class Utility {
     }
   }
 
-  private static colorHash = new ColorHash({lightness: 0.7});
+  private static colorHash = new ColorHash({lightness: 0.6, saturation: 0.95});
 }

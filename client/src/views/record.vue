@@ -76,7 +76,7 @@
                     <v-text-field placeholder="作業内容" v-model="item.title" @change="modify(item)" :readonly="!editable()" />
                   </div>
                   <v-menu offset-y>
-                    <v-btn slot="activator" depressed :color="color(item.project, 1)">
+                    <v-btn slot="activator" depressed :color="color(projectName(item.project))">
                       <span class="btn-ellipsis">
                         {{ projectName(item.project) }}
                       </span>
@@ -91,7 +91,7 @@
                     </v-list>
                   </v-menu>
                   <v-menu offset-y>
-                    <v-btn slot="activator" depressed :color="color(item.category, 2)">
+                    <v-btn slot="activator" depressed :color="color(categoryName(item.category))">
                       <span class="btn-ellipsis">
                         {{ categoryName(item.category) }}
                       </span>

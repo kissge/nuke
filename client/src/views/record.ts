@@ -36,7 +36,7 @@ export default class Category extends Vue {
   public selectedUserId: number | null = null;
   public users = [];
 
-  public color = (seed: number, type: number) => Utility.color(seed, type);
+  public color = (seed?: string) => Utility.color(seed);
 
   public mounted() {
     this.$axios.get('/api/category')
