@@ -76,8 +76,8 @@
                     <v-text-field placeholder="作業内容" v-model="item.title" @change="modify(item)" :readonly="!editable()" />
                   </div>
                   <v-menu offset-y>
-                    <v-btn slot="activator" depressed :color="color(projectName(item.project))">
-                      <span class="btn-ellipsis">
+                    <v-btn slot="activator" depressed :color="color(1, item.project)">
+                      <span class="btn-ellipsis" v-bind:class="{wide: $vuetify.breakpoint.mdAndUp}">
                         {{ projectName(item.project) }}
                       </span>
                       <v-icon>dvr</v-icon>
@@ -91,8 +91,8 @@
                     </v-list>
                   </v-menu>
                   <v-menu offset-y>
-                    <v-btn slot="activator" depressed :color="color(categoryName(item.category))">
-                      <span class="btn-ellipsis">
+                    <v-btn slot="activator" depressed :color="color(2, item.category)">
+                      <span class="btn-ellipsis" v-bind:class="{wide: $vuetify.breakpoint.mdAndUp}">
                         {{ categoryName(item.category) }}
                       </span>
                       <v-icon>category</v-icon>
@@ -120,11 +120,14 @@
 </template>
 
 <script src="./record.ts" />
-<style>
+<style lang="scss">
   .btn-ellipsis {
     width: 6em;
     overflow: hidden;
     text-overflow: ellipsis;
+    &.wide {
+      width: 12em;
+    }
   }
 
   .superwide .v-list__tile {

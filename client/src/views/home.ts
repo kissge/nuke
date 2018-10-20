@@ -55,7 +55,7 @@ export default class Home extends Vue {
           datasets.categoryWise[id] = {};
           this.categoryWise.push({
             label: name,
-            backgroundColor: Utility.color(name),
+            backgroundColor: Utility.color(2, id),
             borderColor: '#ccc',
             borderWidth: 1,
             stack: 'stack',
@@ -67,7 +67,7 @@ export default class Home extends Vue {
           datasets.projectWise[id] = {};
           this.projectWise.push({
             label: name,
-            backgroundColor: Utility.color(name),
+            backgroundColor: Utility.color(1, id),
             borderColor: '#ccc',
             borderWidth: 1,
             stack: 'stack',
